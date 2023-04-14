@@ -199,3 +199,15 @@ int LocateElem(SeqList L, Elemtype e){
     return 0;
 }
 ~~~
+
+# 5. 单链表初始化
+~~~
+5.1 定义单链表
+struct LNode{ // 定义单链表节点类型
+  Elemtype data; // 数据域。每个节点存放一个数据元素
+  struct LNode *next; // 指针域。指针指向下一个节点
+};
+struct LNode *p = (struct LNode *)malloc(sizeof(struct LNode)); // 增加一个新的节点：在内存中声擎一个节点所需空间，并用指针p指向这个节点
+typedef struct LNode LNode; // 将struct LNode重命名为LNode，简化书写
+typedef struct LNode *Linklist; // 将struct LNode *重命名为LinkList
+~~~
