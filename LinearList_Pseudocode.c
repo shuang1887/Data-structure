@@ -203,11 +203,69 @@ int LocateElem(SeqList L, Elemtype e){
 # 5. 单链表初始化
 ~~~
 5.1 定义单链表
-struct LNode{ // 定义单链表节点类型
+struct LNode{ // 定义单链表节点类型。LNode本身是一个节点
   Elemtype data; // 数据域。每个节点存放一个数据元素
-  struct LNode *next; // 指针域。指针指向下一个节点
+  struct LNode *next; // 指针域。next是指向struct LNode类型变量的指针。指针指向下一个节点，需要定义成指向节点的指针类型。
 };
-struct LNode *p = (struct LNode *)malloc(sizeof(struct LNode)); // 增加一个新的节点：在内存中声擎一个节点所需空间，并用指针p指向这个节点
+struct LNode *p = (struct LNode *)malloc(sizeof(struct LNode)); // 增加一个新的节点：在内存中声明一个节点所需空间，并用指针p指向这个节点
 typedef struct LNode LNode; // 将struct LNode重命名为LNode，简化书写
-typedef struct LNode *Linklist; // 将struct LNode *重命名为LinkList
+typedef struct LNode *Linklist; // 将struct LNode *重命名为LinkList，Linklist L等价于strcut LNode *L。一般来说使用LNode *想要强调的是它是一个节点类型；Linklist想要强调的是它是一个单链表
+
+5.2 定义单链表_课本简洁写法
+typedef struct LNode{
+  Elemtype data;
+  struct LNode *next;
+}LNode, *LinkList;
+
+5.3 初始化不带头结点的单链表
+typedef struct LNode{
+  Elemtype data;
+  struct LNode *next;
+}LNode, *LinkList;
+
+// 初始化一个空的单链表
+bool InitList(LinkList &L){
+  L = NULL; // 空表，暂时没有任何节点
+  return true;
+}
+// 判断单链表是否为空
+bool Empty(LinkList L){
+  if(L==NULL)
+    return true;
+  else
+    return false;
+}
+// 或
+// bool Empty(LinkList L){
+//    return(L==NULL);
+// }
+
+void test(){
+  LinkList L; // 声明一个指向单链表的指针
+  //初始化一个空表
+  InitList(L);
+  // 后续代码...
+}
+
+5.4 带头结点的单链表初始化
+typedef struct LNode{
+  Elemtype data;
+  struct LNode *next;
+}LNode, *LinkList;
+
+// 初始化一个带头结点的单链表
+bool InitList(LinkList &L){
+  L = (LNode *)malloc(sizeof(LNode)); //分配一个头结点
+  if(L==NULL)
+    return false; //内存不足，分配失败
+  L->next = NULL; //头结点之后暂时没有分配节点
+  return true;
+}
+
+void test(){
+  LinkList L; // 声明一个指向单链表的指针
+  //初始化一个空表
+  InitList(L);
+  // 后续代码...
+}
 ~~~
