@@ -320,10 +320,59 @@ bool ListInsert(LinkList &L, int i, Elemtype e){
   //后面代码逻辑与带头结点版本一致
 }
 
-6.3 按位序后插
-//即前述代码
+6.3 指定p节点的后插操作
+//类似前述代码，不用参数i表示位序，而是直接用*p
 
-6.4 按位序前叉（O（n）版本）
-bool InsertPriorNode(LinkList L, LNode *p, Elemtype e) //传入头指针，从头遍历
+6.4 指定p节点的前插操作（O(n)版本）
+bool InsertPriorNode(LinkList L, LNode *p, Elemtype e){ //传入头指针，从头遍历
+}
+
+6.5 指定节点的前插操作（O(1)版本）
+bool InsertPriorNode(LNode *p, Elemtype e){
+  if(p==NULL)
+    return false;
+  LNode *s = (LNode *)malloc(sizeof(LNode));
+  if(s==NULL)
+    return false; //内存分配失败
+  s->data = p->data; //复制p节点的数据域
+  s->next = p->next; //p后插入s
+  p->next = s; //p节点指向s
+  p->data = e; //将待插入的数据覆盖p原有数据域
+  return true;
+}
+
+6.6 按位序删除（带头结点）
+bool ListDelete(LinkList &L, int i, Elemtype &e){
+  if(i<1)
+    return false;
+  LNode *p;
+  int j = 0;
+  p = L; //L指向头结点，头结点是第0个节点（不存储数据）
+  while (p!=NULL && j<i-1){ //循环找到第i-1个节点
+    p = p->next;
+    j++;
+  }
+  if(p==NULL) //i值不合法
+    return false;
+  if(p->next == NULL) //第i-1个节点之后已经没有其他节点
+    return false;
+  LNode *q = p->next; //令q指向p的下一个节点（被删除节点）
+  e = q->data; //用e返回被删除元素的值
+  p->next = q->next; //p的指针域指向被删除节点的下一个节点
+  free(q); //释放q的内存空间，完成“删除”
+  return true;
+
+6.7 指定节点的删除（O（1）版本）
+//删除指定节点p，需要更改前驱节点的指针指向
+bool DeledeNode(LNode *p){
+  if(p==NULL)
+    return false;
+  LNode *q = p->next; //令q指向*p的后继节点
+  p->data = p->next->data; //用待删除节点的后一个节点的数据域覆盖待删除节点的数据域。
+  //此时若是待删除的节点为最后一个节点，q->next为空指针，程序出错。在单链表情况下，删除指定最后一个节点p需要传入头指针，从头遍历
+  p->next = q->next; //将p指向q的下一个节点
+  free(q); //完成“删除”
+  return true;
+}
 ~~~
 
