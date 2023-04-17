@@ -217,7 +217,7 @@ typedef struct LNode{
   struct LNode *next;
 }LNode, *LinkList;
 
-5.3 初始化不带头结点的单链表
+5.3 初始化单链表（不带头结点）
 typedef struct LNode{
   Elemtype data;
   struct LNode *next;
@@ -225,7 +225,7 @@ typedef struct LNode{
 
 // 初始化一个空的单链表
 bool InitList(LinkList &L){
-  L = NULL; // 空表，暂时没有任何节点
+  L = NULL; // 空表，暂时没有任何节点。头指针指向的节点为头结点（这里为空），它之后指向的下一个节点可以开始存放数据
   return true;
 }
 // 判断单链表是否为空
@@ -247,7 +247,7 @@ void test(){
   // 后续代码...
 }
 
-5.4 带头结点的单链表初始化
+5.4 初始化单链表（带头结点）
 typedef struct LNode{
   Elemtype data;
   struct LNode *next;
@@ -258,8 +258,15 @@ bool InitList(LinkList &L){
   L = (LNode *)malloc(sizeof(LNode)); //分配一个头结点
   if(L==NULL)
     return false; //内存不足，分配失败
-  L->next = NULL; //头结点之后暂时没有分配节点
+  L->next = NULL; //L的指针域设置为NULL。next指向的那个才是头结点，这个节点不存放数据元素，只有它的再下一个才开始实际存放数据
   return true;
+}
+//判断带头结点的单链表是否为空
+bool Empty(LinkList L){
+  if(L->next==NULL)
+    return true;
+  else
+    return false;
 }
 
 void test(){
@@ -269,3 +276,54 @@ void test(){
   // 后续代码...
 }
 ~~~
+
+# 6. 单链表插入
+~~~
+6.1 按位序插入（带头结点）
+typedef struct LNode{
+  Elemtype data;
+  struct LNode *next;
+}LNode, *LinkList;
+
+//在第i个位置插入元素e（带头结点）
+bool ListInsert(LinkList &L, int i, Elemtype e){
+  if(i<1) //i是位序，位序必须从1开始
+    return false;
+  LNode *p; //声明一个指针p，用来指向当前扫描到的节点
+  int j=0; //当前p指向的是第j个节点
+  p = L; //L指向头结点，头结点是第0个节点（不存放数据）
+  while (p!=NULL && j<i-1){ //循环找到第i-1个节点
+    p=p->next; //p移到下一个节点
+    j++;
+  }
+  if(p==NULL) //i值不合法
+    return false;
+  LNode *s = (LNode *)malloc(sizeof(LNode));
+  s->data = e;
+  s->next = p->next; //s指向p原先指向的节点
+  p->next = s; //将节点s连到p之后
+  return true;
+}
+
+6.2 按位序插入（不带头结点）
+//大部分代码相同，只是针对i==1的情况要修改头结点
+bool ListInsert(LinkList &L, int i, Elemtype e){
+  if(i<1)
+    return false;
+  if(i==1){
+    LNode *s = (LNode *)malloc(sizeof(LNode));
+    s->data = e;
+    s->next = L; 
+    L = s; //头指针指向新节点。不带头结点，则需修改头指针的指向。带头结点的话，头指针永远指向头结点。
+    return true;
+  }
+  //后面代码逻辑与带头结点版本一致
+}
+
+6.3 按位序后插
+//即前述代码
+
+6.4 按位序前叉（O（n）版本）
+bool InsertPriorNode(LinkList L, LNode *p, Elemtype e) //传入头指针，从头遍历
+~~~
+
