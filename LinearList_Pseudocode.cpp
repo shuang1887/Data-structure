@@ -376,3 +376,19 @@ bool DeledeNode(LNode *p){
 }
 ~~~
 
+# 7.单链表查找
+~~~
+7.1 按位查找
+LNode * GetElem(LinkList L, int i){
+  if(i<0)
+    return NULL;
+  LNode *p;
+  int j=0;
+  p = L;
+  while(p!=NULL && j<i){
+    p=p->next;
+    j++;
+  }
+  return p;
+}
+~~~
