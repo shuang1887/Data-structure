@@ -391,4 +391,25 @@ LNode * GetElem(LinkList L, int i){
   }
   return p;
 }
+
+7.2 按值查找
+LNode * LocateElem(LinkList L, ElemType e){
+  LNode *p = L->next;//从第一个节点开始查找数据域为e的节点
+  while(p!=NULL && p->data != e)
+    p = p->next;
+  return p;
+}
+
+7.3 求单链表的长度
+
+int Length(LinkList L){
+  int len = 0;
+  LNode *p = L;
+  while(p->next != NULL){
+    p = p->next;
+    len++;
+  }
+  return len;
+}
+    
 ~~~
