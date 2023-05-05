@@ -413,3 +413,57 @@ int Length(LinkList L){
 }
     
 ~~~
+
+# 8. 单链表建立
+~~~
+8.1 尾插法建立单链表
+// 在p节点后插入元素e
+bool InsertNextNode(LNode *p, Elemtype e){
+  if(p == NULL)
+    return false;
+  LNode *s = (LNode *)malloc(sizeof(LNode));
+  if(s == NULL) // 内存分配失败
+    return false;
+  s->data = e; // 用节点s保存数据元素e
+  s->next = p->next;
+  p->next = s; // 将节点s连接到p之后
+  return true;
+}
+// 实现
+LinkList List_TailInsert(LinkList &L){
+  int x;
+  L = (LinkList)malloc(sizeof(LNode)); // 创建头结点
+  L->next = NULL; // 初始化为空链表。不指定头结点指向NULL的情况下，可能会随机指向一片未知的内存区域，带来脏数据。
+  LNode *s, *r = L; // r为表尾指针
+  scanf("%d", &x); // 输入节点的值
+  while(x != -1){ // -1表示结束
+    s = (LNode *)malloc(sizeof(LNode));
+    s->data = e;
+    s->next = r->next;
+    r->next = s;
+    r = s; // r指向新的表尾节点
+    scanf("%d", &x);
+  }
+  r->next = NULL;
+  return L;
+}
+
+8.2 头插法建立单链表
+// 对头结点执行后插操作即可。很多链表逆序的核心逻辑也是来源于此
+// 实现
+LinkList List_HeadInsert(LinkList &L){
+  LNode *s;
+  int x;
+  L = (LinkList)malloc(sizeof(LNode)); // 创建头结点
+  L->next = NULL; // 初始化为空链表。不指定头结点指向NULL的情况下，可能会随机指向一片未知的内存区域，带来脏数据。
+  scanf("%d", &x);
+  while(x !=-1){
+    s = (LNode *)malloc(sizeof(LNode )); // 创建新节点
+    s->data = x;
+    s->next = L->next;
+    L->next = s; // 对头结点进行后插，实现整个链表的前插操作
+    scanf("%d", &X);
+  }
+  return L;
+} 
+~~~
