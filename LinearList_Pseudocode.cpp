@@ -467,3 +467,31 @@ LinkList List_HeadInsert(LinkList &L){
   return L;
 } 
 ~~~
+# 9. 双链表
+~~~
+9.1 双链表初始化
+typedef struct DNode{
+  ElemType data;
+  struct DNode *prior, *next;
+}DNode, *DLinklist;
+
+bool InitDLinkList(DLinklist &L){
+  L = (DNode *) malloc(sizeof(DNode));
+  if(L == NULL)
+    return false;
+  L->prior = NULL; // 头结点的前驱永远指向NULL
+  L->next = NULL; // 头结点后驱暂时没有结点
+  return true;
+}
+// 判断双链表是否为空（带头结点）
+bool Empty(DLinklist L){
+  if(L->next == NULL) // 判断后继指针是否为空即可
+    return true;
+  else
+    return false;
+}
+
+9.2 双链表的插入、
+bool InsertNextDNode(DNode
+
+~~~
