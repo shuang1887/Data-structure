@@ -491,7 +491,37 @@ bool Empty(DLinklist L){
     return false;
 }
 
-9.2 双链表的插入、
-bool InsertNextDNode(DNode
+9.2 双链表后插操作
+//普通情况
+bool InsertNextDNode(DNode *p, DNode *s){
+  s->next = p->next; //将结点*s插入到结点*p之后
+  p->next->prior = s;
+  s->prior = p;
+  p->next = s;
+}
+//*p结点为最后一个结点的情况
+bool InsertNextDNode(DNode *p, DNode *s){
+  if(p==NULL || s==NULL) //非法参数
+    return false;
+  s->next=p->next;
+  if(p->next != NULL) //如果p结点后有后继结点
+    p->next->prior = s;
+  s->prior = p;
+  p->next = s; //不能和第一句换顺序
+  return true;
+}
 
+9.3 双链表删除操作
+bool DeleteNextDNode(DNode *p){
+  if(p==NULL)
+    return false;
+  DNode *q = p->next; //找到p的后继结点
+  if(q==NULL) //p没有后继
+    return false;
+  p->next = q->next;
+  if(q->next != NULL) //q不是最后一个结点
+    q->next->prior = p;
+  free(q);
+  return true;
+}
 ~~~
