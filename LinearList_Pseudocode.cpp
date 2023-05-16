@@ -6,6 +6,7 @@
 ~~~
 
 # 0. 线性表基本操作
+~~~
 InitList(&L); //初始化表。构造一个空的线性表；分配内存空间。  
 DestroyList(&L); //销毁表。销毁线性表，并师范线性表L所占用的内存空间。  
   
@@ -18,6 +19,7 @@ GetElem(L, i); //按位置查找。在表L中获取第i个位置的元素的值�
 Length(L); //求表长度。返回线性表L的长度，即线性表L中的元素个数。  
 PrintList(L); //输出线性表。按前后顺序输出线性表L的所有元素值。  
 Empty(L); //判断表是否为空。是则返回True，否则返回False。  
+~~~
 
 # 1. 线性表初始化
 ~~~
@@ -492,6 +494,7 @@ bool Empty(DLinklist L){
 }
 
 9.2 双链表后插操作
+//双链表的前插操作可以通过找到前驱结点进行后插来完成，这是双链表的优势之一
 //普通情况
 bool InsertNextDNode(DNode *p, DNode *s){
   s->next = p->next; //将结点*s插入到结点*p之后
@@ -524,4 +527,127 @@ bool DeleteNextDNode(DNode *p){
   free(q);
   return true;
 }
+
+9.4 双链表遍历
+// 双链表不可随机存取，按位查找、按值查找的操作都只能用遍历的方式实现，时间复杂度为O(n)
+// 后向遍历
+while(p!=NULL){
+  //对结点p做相应处理，如打印
+  p = p->next;
+}
+// 前向遍历
+while(p!=NULL){
+  //对结点p做相应处理，如打印
+  p = p->prior;
+}
+// 前向遍历（跳过头结点）
+while(p->prior!=NULL){
+  //对结点p做相应处理，如打印
+  p = p->prior;
+}
 ~~~
+# 10.循环链表
+~~~
+//单链表从一个结点出发只能找到后续的各个结点，循环单链表从一个结点出发可以找到其他任何一个结点
+10.1 循环单链表初始化
+typedef struct LNode{
+  ElemType data;
+  struct LNode *next;
+}LNode, *LinkList;
+
+//初始化一个循环单链表
+bool InitList(LinkList &L){
+  L = (LNode *)malloc(sizeof(LNode));
+  if(L=NULL)
+    return false;
+  L->next = L; //头结点的next指向头结点
+  return true;
+}
+
+10.2 循环单链表判断是否为空
+bool Empty(LinkList L){
+  if(L->next == L)
+    return true;
+  else
+    return false;
+}
+
+10.3 循环单链表判断结点p是否为单链表的表尾结点
+bool isTail(LinkList L, LNode *p){
+  if(p->next == L)
+    return true;
+  else
+    return false;
+}
+
+10.4 循环双链表的初始化
+bool InitDLinkList(DLinklist &L){
+  L = (DNode *)malloc(sizeof(DNode));
+  if(L == NULL)
+    return false;
+  L->next = L; //头结点next指针指向自己
+  L->prior = L; //头结点prior指针指向自己
+  return true;
+}
+
+10.5 循环双链表判断是否为空
+bool Empty(DLinklist L){
+  if(L->next = L || L->prior = L)
+    return true;
+  else
+    return false;
+}
+
+10.6 循环双链表判断结点p是否为双链表的表尾结点
+bool isTail(DLinklist L, DNode p*){
+  if(p->next == L)
+    return true;
+  else
+    return false;
+    
+10.7 循环双链表的插入
+//在p结点之后插入s结点
+//由于是循环双链表，所以不需要考虑p是表尾结点的情况，这是循环双链表的优势之一
+bool InsertNextDNode(DNode *p, DNode *s){
+  s->next = p->next;
+  p->next->prior = s;
+  p->next = s;
+  s->prior = p;
+}
+
+10.8 循环双链表的删除
+bool DeleteNextDNode(DLinklist L, DNode *p){
+  if (p->next == L)
+    return false;
+  else{
+    s = p->next;
+    p->next = s->next;
+    s->next->prior = p;
+    free(s);
+    return true
+  }
+~~~
+
+# 11. 静态链表
+~~~
+//用数组的方式实现链表，是一片连续的存储空间，每个结点有数据部分和下一个节点的数组下标（游标）部分构成，游标充当“指针”
+//优点：增删操作不需要移动太亮元素
+//缺点：不能随机存取，只能从头结点开始依次往后查找；容量固定不可变
+11.1 静态链表的定义
+#define Maxsize 10 //静态链表的最大长度
+typedef struct{ //静态链表结构类型的定义
+  ElemType data; //存储数据元素
+  int next; //下一个元素的数组下标
+}SLinkList[Maxsize];
+
+
+//以上为课本写法，等价于
+#define Maxsize 10
+struct Node{
+  ElemType data;
+  int next;
+};
+typedef struct Node SLinkList[Maxsize];
+
+~~~
+
